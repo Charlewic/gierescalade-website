@@ -103,10 +103,23 @@ function drupal8_zymphonies_theme_preprocess_menu(&$variables, $hook) {
       // If path is current_path, set active to li.
       if ($item['url']->toString() == $current_path) {
       // Add active link.
-      $variables['items'][$key]['attributes']['class'] = 'active';
+          $variables['items'][$key]['attributes']['class'] = 'active';
       }
+      // if(preg_match("/(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)/", $item['url']->toString()) == 1) {
+      //     $variables['items'][$key]['attributes']['target'] = '_blank';
+      // }
     }
   }
+}
+
+function drupal8_zymphonies_theme_link_alter(&$variables){
+  // $url = $variables['url'];
+  // var_dump($url);
+  // die('test');
+  // // Return early where possible.
+  // if ($url->isExternal()) {
+  //   return;
+  // }
 }
 
 /**

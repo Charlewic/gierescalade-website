@@ -287,9 +287,9 @@ input[type="submit"]:hover{
 
 /*FRONT PAGE*/
 
-.path-frontpage .content_layout {
-  text-align: center;
-}
+/*.path-frontpage .content_layout {*/
+  /*text-align: center;*/
+/*}*/
 
 .path-frontpage .feed-icon{
   display: none;
