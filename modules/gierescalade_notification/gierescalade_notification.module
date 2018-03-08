@@ -1,0 +1,133 @@
+<?php
+
+use Drupal\user\Entity\User;
+use Drupal\node\NodeInterface;
+use Drupal\comment\Entity\Comment;
+
+function gierescalade_notification_node_insert(NodeInterface $node) {
+    if($node->type != 'discussions'){
+      return;
+    }
+
+    \Drupal::logger('gierescalade_notification')->notice("New node [".$node->getTitle()."] insered");
+    
+    $createdDate = $node->get('created')->value;
+    $stringDate = date("d/m/Y \à H:i", $createdDate);
+    $options = ['absolute' => TRUE];
+    $url_object = \Drupal\Core\Url::fromRoute('entity.node.canonical', ['node' => $node->id()], $options);
+    //$alias = \Drupal::service('path.alias_manager')->getAliasByPath('/node/'.$node->get('nid'));
+
+    $subject = "Gieresecalade nouvelle discussion : ".$node->getTitle();
+    $message = $node->getOwner()->getDisplayName()." a écrit le ".$stringDate." :<br/>".$node->get('body')->value;
+    $message .= "<br/><br/>Accès direct à la discussion : ".$url_object->toString();
+
+    _gierescalade_notification_send_mail_to_grimpeurs($subject, $message, 'new_discussion');
+}
+
+function gierescalade_notification_node_update(NodeInterface $node)
+{
+    if($node->type != 'discussions'){
+      return;
+    }
+
+    \Drupal::logger('gierescalade_notification')->notice("Node [".$node->getTitle()."] updated");
+
+    $createdDate = $node->get('created')->value;
+    $stringDate = date("d/m/Y \à H:i", $createdDate);
+    $options = ['absolute' => TRUE];
+    $url_object = \Drupal\Core\Url::fromRoute('entity.node.canonical', ['node' => $node->id()], $options);
+
+    $subject = "Gieresecalade nouvelle discussion : ".$node->getTitle();
+    $message = $node->getOwner()->getDisplayName()." a écrit le ".$stringDate." :<br/>".$node->get('body')->value;
+    $message .= "<br/><br/>Accès direct à la discussion : ".$url_object->toString();
+
+    _gierescalade_notification_send_mail_to_grimpeurs($subject, $message, 'new_discussion');
+}
+
+function gierescalade_notification_comment_insert(Comment $comment) {
+  // Reindex the node when comments are added.
+  \Drupal::logger('gierescalade_notification')->notice("Ajout d'un commentaire");
+  
+  $commendBody = $comment->get('comment_body')->value;
+  $commentDate = $comment->get('created')->value;
+  $stringDate = date("d/m/Y \à H:i", $commentDate);
+  $comment->get('subject')->value;
+  $entityId = $comment->get('entity_id')->target_id;
+  $node = node_load($entityId);
+  if($node->type != 'discussions'){
+      return;
+  }
+  $uid = $comment->getOwnerId();
+  $user = user_load($uid);
+  $userName = $user->getDisplayName();
+
+  $options = ['absolute' => TRUE];
+  $url_object = \Drupal\Core\Url::fromRoute('entity.comment.canonical', ['comment' => $comment->id()], $options);
+
+  //\Drupal::logger('gierescalade_notification')->notice($userName." a répondu le ".$stringDate." : \n\n".$commendBody);
+
+  $subject = "Réponse à la discussion : ".$node->getTitle();
+  $message = $userName." a répondu le ".$stringDate." : <br/>".$commendBody;
+  $message .= "<br/><br/>Accès à la réponse : ".$url_object->toString()."#comment-".$comment->id();
+
+  _gierescalade_notification_send_mail_to_grimpeurs($subject, $message, 'new_comment');
+}
+
+function _gierescalade_notification_send_mail_to_grimpeurs($subject, $message, $messageType){
+    $query = \Drupal::entityQuery('user')
+        ->condition('status', 1)
+        ->condition('roles', 'grimpeur');
+
+    switch ($messageType) {
+        case 'new_comment':
+            $query->condition('field_comment_notif', 1);
+            break;
+        case 'new_discussion':
+            $query->condition('field_discussion_notif', 1);
+            break;
+    }
+
+    $ids = $query->execute();
+    $accounts = User::loadMultiple($ids);
+
+    $recipients = '';
+    $recipientsArray = array();
+    foreach ($accounts as $account) {
+        $recipientsArray[] = $account->getEmail();
+        // \Drupal::logger('gierescalade_notification')->notice("Sent email to [".$account->getEmail()."]");
+    }
+    if(empty($recipientsArray)){
+        \Drupal::logger('gierescalade_notification')->notice("No recipients to send mail to");
+        return;
+    }
+    $recipients = implode(", ", $recipientsArray);
+
+    $params = array(
+        'subject' => $subject,
+        'message' => $message,
+    );
+    
+    // \Drupal::logger('gierescalade_notification')->notice("Mail sended<br/>".$params['subject']."<br/>".$params['message']);
+
+    $langcode = \Drupal::currentUser()->getPreferredLangcode();
+    $mailManager = \Drupal::service('plugin.manager.mail');
+    $message = $mailManager->mail('gierescalade_notification', $messageType, $recipients, $langcode, $params, "gierescalade@yahoo.fr", true);
+}
+
+function gierescalade_notification_mail($key, &$message, $params) {
+  switch ($key) {
+    case 'new_discussion':
+    case 'new_comment':
+      $message['from'] = \Drupal::config('system.site')->get('mail');
+      $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
+      $message['subject'] = '=?UTF-8?B?'.base64_encode($params['subject']).'?=';
+      $message['body'][] = $params['message'];
+      $message['options'] = [];
+      if (isset($params['options']) && !empty($params['options'])) {
+        foreach ($params['options'] as $key => $value) {
+          $message['options'][$key] = $value;
+        }
+      }
+      break;
+  }
+}

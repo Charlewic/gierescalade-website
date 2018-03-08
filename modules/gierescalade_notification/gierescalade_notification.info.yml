@@ -1,0 +1,7 @@
+name: Gierescalade Notification module
+description: Notify user when a discusions is created or a comment added to a discussion
+package: Custom
+
+type: module
+core: 8.x
+version: 1.0
