@@ -1,12 +1,13 @@
 name: Drupal8 Zymphonies Theme
 type: theme
-description: 'Zymphonies Drupal 8 Responsive Theme. Developed & Designed by <a href=http://www.zymphonies.com>Zymphonies</a><br/>Contact us for Drupal Design & Development <a href=mailto:info@zymphonies.com>info@zymphonies.com</a>'
+description: 'Designed & Developed by <a href=http://www.zymphonies.com>Zymphonies</a><br/>Contact us for any kind of Drupal services <a href=mailto:info@zymphonies.com>info@zymphonies.com</a>'
 package: core
 # core: 8.x
 
 #Libraries
 libraries:
   - drupal8_zymphonies_theme/bootstrap
+  - drupal8_zymphonies_theme/fontawesome
   - drupal8_zymphonies_theme/global-components
 
 #Regions
@@ -34,7 +35,13 @@ regions:
   google_map: 'Google Map'
   auto_hidden_block: 'Auto hidden blocks'
 # Information added by Drupal.org packaging script on 2016-01-08
-version: '8.x-1.0'
+# version: '8.x-1.0'
+# core: '8.x'
+# project: 'drupal8_zymphonies_theme'
+# datestamp: 1452278346
+
+# Information added by Drupal.org packaging script on 2017-11-30
+version: '8.x-1.3'
 core: '8.x'
 project: 'drupal8_zymphonies_theme'
-datestamp: 1452278346
+datestamp: 1512068614

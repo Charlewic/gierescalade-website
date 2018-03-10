@@ -103,23 +103,10 @@ function drupal8_zymphonies_theme_preprocess_menu(&$variables, $hook) {
       // If path is current_path, set active to li.
       if ($item['url']->toString() == $current_path) {
       // Add active link.
-          $variables['items'][$key]['attributes']['class'] = 'active';
+      $variables['items'][$key]['attributes']['class'] = 'active';
       }
-      // if(preg_match("/(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)/", $item['url']->toString()) == 1) {
-      //     $variables['items'][$key]['attributes']['target'] = '_blank';
-      // }
     }
   }
-}
-
-function drupal8_zymphonies_theme_link_alter(&$variables){
-  // $url = $variables['url'];
-  // var_dump($url);
-  // die('test');
-  // // Return early where possible.
-  // if ($url->isExternal()) {
-  //   return;
-  // }
 }
 
 /**
@@ -172,9 +159,8 @@ function drupal8_zymphonies_theme_form_system_theme_settings_alter(&$form, \Drup
   );
 
   // Custom submit to save the file permenant.
-  $form['#submit'][] = 'drupal8_zymphonies_theme_settings_form_submit';
+  // $form['#submit'][] = 'drupal8_zymphonies_theme_settings_form_submit';
 
-  //Copyright
   $form['drupal8_zymphonies_theme_settings']['copyright'] = array(
     '#type' => 'details',
     '#title' => t('Copyright'),
@@ -198,18 +184,6 @@ function drupal8_zymphonies_theme_form_system_theme_settings_alter(&$form, \Drup
     '#type' => 'checkbox',
     '#title' => t("Show/Hide credit text"),
     '#default_value' => theme_get_setting('show_credit_link'),
-    '#description'   => t("Recommend you to display credit in footer"),
+    '#description'   => t("Zymphonies recommend you to display credit in footer"),
   );
-}
-
-/**
- * Implements hook_preprocess_breadcrumb().
- */
-function drupal8_zymphonies_theme_preprocess_breadcrumb(&$variables){
-  if(($node = \Drupal::routeMatch()->getParameter('node')) && $variables['breadcrumb']){
-    $variables['breadcrumb'][] = array(
-     'text' => $node->getTitle(),
-     'url' => $node->URL()
-   );
-  }
 }
