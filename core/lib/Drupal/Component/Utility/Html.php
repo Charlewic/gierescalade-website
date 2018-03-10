@@ -61,13 +61,15 @@ class Html {
    * Do not pass one string containing multiple classes as they will be
    * incorrectly concatenated with dashes, i.e. "one two" will become "one-two".
    *
-   * @param string $class
-   *   The class name to clean.
+   * @param mixed $class
+   *   The class name to clean. It can be a string or anything that can be cast
+   *   to string.
    *
    * @return string
    *   The cleaned class name.
    */
   public static function getClass($class) {
+    $class = (string) $class;
     if (!isset(static::$classes[$class])) {
       static::$classes[$class] = static::cleanCssIdentifier(Unicode::strtolower($class));
     }
@@ -449,9 +451,9 @@ EOD;
    *   The updated (X)HTML snippet.
    */
   public static function transformRootRelativeUrlsToAbsolute($html, $scheme_and_host) {
-    assert('empty(array_diff(array_keys(parse_url($scheme_and_host)), ["scheme", "host", "port"]))', '$scheme_and_host contains scheme, host and port at most.');
-    assert('isset(parse_url($scheme_and_host)["scheme"])', '$scheme_and_host is absolute and hence has a scheme.');
-    assert('isset(parse_url($scheme_and_host)["host"])', '$base_url is absolute and hence has a host.');
+    assert(empty(array_diff(array_keys(parse_url($scheme_and_host)), ["scheme", "host", "port"])), '$scheme_and_host contains scheme, host and port at most.');
+    assert(isset(parse_url($scheme_and_host)["scheme"]), '$scheme_and_host is absolute and hence has a scheme.');
+    assert(isset(parse_url($scheme_and_host)["host"]), '$base_url is absolute and hence has a host.');
 
     $html_dom = Html::load($html);
     $xpath = new \DOMXpath($html_dom);
