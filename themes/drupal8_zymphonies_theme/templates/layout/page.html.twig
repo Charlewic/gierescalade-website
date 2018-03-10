@@ -286,7 +286,8 @@
 
 
 <!-- start: Footer -->
-{% if  is_front and (page.footer_first or page.footer_second or page.footer_third) %}
+{# Footerwidget is printed even if its not frontpage (use page limitation for that !) #}
+{% if  (page.footer_first or page.footer_second or page.footer_third) %}
   <div class="footerwidget">
     <div class="container">
       

@@ -565,3 +565,58 @@ ul.links.inline li{
   text-align: left;
   margin-bottom: 5px;
 }
+
+.align-center{
+  text-align: center;
+}
+
+figure {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+figure.align-left {
+  float: none;
+  text-align: left;
+}
+
+figure.align-right {
+  float: none;
+  text-align: right;
+}
+
+figcaption {
+  color: #333;
+  font-family: Helvetica, sans-serif;
+  font-size: 1rem;
+}
+
+.field--name-field-images:after {
+  display: block;
+  content: "";
+  clear: both;
+}
+
+.field--name-field-images .field__item{
+  display: inline-block;
+  float: left;
+}
+
+.breadcrumb ul {
+    display: inline-block;
+    position: relative;
+}
+
+.breadcrumb ul:after {
+    content: "";
+    width: 10px;
+    height: 100%;
+    background-color: white;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.footerwidget{
+  padding: 50px 0 30px;
+}
