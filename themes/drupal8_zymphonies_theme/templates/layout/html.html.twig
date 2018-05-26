@@ -47,5 +47,16 @@
     {{ page }}
     {{ page_bottom }}
     <js-bottom-placeholder token="{{ placeholder_token|raw }}">
+    <script src="/themes/drupal8_zymphonies_theme/js/jquery.masonry.min.js"></script>
+    <script>
+      var $container = jQuery('.node--type-gallerie.node--view-mode-full .field--name-field-images');
+        if($container.length > 0){
+          // $container.imagesLoaded( function(){
+          $container.masonry({
+            itemSelector : '.field__item'
+          });
+        // });
+      }
+    </script>
   </body>
 </html>

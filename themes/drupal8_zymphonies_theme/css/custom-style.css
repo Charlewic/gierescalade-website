@@ -591,7 +591,17 @@ figcaption {
 
 .field--name-field-images .field__item{
   display: inline-block;
+  width: 31%;
+  margin: 5px;
+  padding: 5px;
+  background: #D8D5D2;
   float: left;
+}
+
+.field--name-field-images .field__item img{
+  max-width: 100%;
+  display: block;
+  width: 100%;
 }
 
 .breadcrumb ul {
@@ -610,5 +620,5 @@ figcaption {
 }
 
 .footerwidget{
-  padding: 50px 0 30px;
+  padding: 50px 0 30px !important;
 }
