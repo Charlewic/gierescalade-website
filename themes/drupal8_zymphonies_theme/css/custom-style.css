@@ -609,6 +609,7 @@ figcaption {
     position: relative;
 }
 
+/*
 .breadcrumb ul:after {
     content: "";
     width: 10px;
@@ -617,6 +618,11 @@ figcaption {
     position: absolute;
     top: 0;
     right: 0;
+}
+*/
+
+.block-system-breadcrumb-block {
+    margin-bottom: 0px;
 }
 
 .footerwidget{

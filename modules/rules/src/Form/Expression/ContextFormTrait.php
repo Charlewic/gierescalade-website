@@ -51,31 +51,12 @@ trait ContextFormTrait {
     else {
       $default_value = $context_definition->getDefaultValue();
     }
-    // DEBUT PATCH Charléric
     $form['context'][$context_name]['setting'] = [
       '#type' => 'textfield',
       '#title' => $title,
       '#required' => $context_definition->isRequired(),
       '#default_value' => $default_value,
     ];
-    // for textarea field
-    // if($context_definition->getdataType() == "textarea") {
-    //    $form['context'][$context_name]['setting'] = [
-    //      '#type' => 'textarea',
-    //      '#title' => $title,
-    //      '#required' => $context_definition->isRequired(),
-    //      '#default_value' => $default_value,
-    //    ];
-    //  }
-    //  else {
-    //    $form['context'][$context_name]['setting'] = [
-    //      '#type' => 'textfield',
-    //      '#title' => $title,
-    //      '#required' => $context_definition->isRequired(),
-    //      '#default_value' => $default_value,
-    //    ];
-    //  }
-     // FIN PATCH Charléric
 
     $element = &$form['context'][$context_name]['setting'];
 

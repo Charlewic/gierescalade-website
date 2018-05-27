@@ -5,7 +5,7 @@ use Drupal\node\NodeInterface;
 use Drupal\comment\Entity\Comment;
 
 function gierescalade_notification_node_insert(NodeInterface $node) {
-    if($node->type != 'discussions'){
+    if($node->getType() != 'discussions'){
       return;
     }
 
@@ -26,7 +26,7 @@ function gierescalade_notification_node_insert(NodeInterface $node) {
 
 function gierescalade_notification_node_update(NodeInterface $node)
 {
-    if($node->type != 'discussions'){
+    if($node->getType() != 'discussions'){
       return;
     }
 
@@ -51,10 +51,10 @@ function gierescalade_notification_comment_insert(Comment $comment) {
   $commendBody = $comment->get('comment_body')->value;
   $commentDate = $comment->get('created')->value;
   $stringDate = date("d/m/Y \à H:i", $commentDate);
-  $comment->get('subject')->value;
+  $commentTitle = $comment->get('subject')->value;
   $entityId = $comment->get('entity_id')->target_id;
   $node = node_load($entityId);
-  if($node->type != 'discussions'){
+  if($node->getType() != 'discussions'){
       return;
   }
   $uid = $comment->getOwnerId();
@@ -66,7 +66,7 @@ function gierescalade_notification_comment_insert(Comment $comment) {
 
   //\Drupal::logger('gierescalade_notification')->notice($userName." a répondu le ".$stringDate." : \n\n".$commendBody);
 
-  $subject = "Réponse à la discussion : ".$node->getTitle();
+  $subject = "Réponse à la discussion : ".$commentTitle." [".$node->getTitle()."]";
   $message = $userName." a répondu le ".$stringDate." : <br/>".$commendBody;
   $message .= "<br/><br/>Accès à la réponse : ".$url_object->toString()."#comment-".$comment->id();
 
@@ -107,7 +107,7 @@ function _gierescalade_notification_send_mail_to_grimpeurs($subject, $message, $
         'message' => $message,
     );
     
-    // \Drupal::logger('gierescalade_notification')->notice("Mail sended<br/>".$params['subject']."<br/>".$params['message']);
+     \Drupal::logger('gierescalade_notification')->notice("Mail sended<br/>".$params['subject']."<br/>".$params['message']);
 
     $langcode = \Drupal::currentUser()->getPreferredLangcode();
     $mailManager = \Drupal::service('plugin.manager.mail');
@@ -115,12 +115,16 @@ function _gierescalade_notification_send_mail_to_grimpeurs($subject, $message, $
 }
 
 function gierescalade_notification_mail($key, &$message, $params) {
+  $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
+  $message['subject'] = '=?UTF-8?B?'.base64_encode($params['subject']).'?=';
   switch ($key) {
     case 'new_discussion':
     case 'new_comment':
       $message['from'] = \Drupal::config('system.site')->get('mail');
-      $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
-      $message['subject'] = '=?UTF-8?B?'.base64_encode($params['subject']).'?=';
+      // $message['headers']['Content-Type'] = 'text/html; charset=UTF-8; format=flowed; delsp=yes';
+      //$message['subject'] = '=?UTF-8?B?'.base64_encode($params['subject']).'?=';
+      $message['headers']['Bcc'] = $message['to'];
+      $message['to'] = [];
       $message['body'][] = $params['message'];
       $message['options'] = [];
       if (isset($params['options']) && !empty($params['options'])) {

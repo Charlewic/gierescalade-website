@@ -733,6 +733,11 @@ $settings['container_yamls'][] = $app_root . '/' . $site_path . '/services.yml';
  * will allow the site to run off of all variants of example.com and
  * example.org, with all subdomains included.
  */
+$settings['trusted_host_patterns'] = array(
+   '^gierescalade\.fr$',
+   '^.+\.gierescalade\.fr$',
+);
+
 
 /**
  * The default list of directories that will be ignored by Drupal's file API.
@@ -764,12 +769,12 @@ $settings['file_scan_ignore_directories'] = [
 #   include $app_root . '/' . $site_path . '/settings.local.php';
 # }
 $databases['default']['default'] = array (
-  'database' => 'Gierescalade',
-  'username' => 'root',
-  'password' => 'root',
+  'database' => 'gierescaqbwebsit',
+  'username' => 'gierescaqbwebsit',
+  'password' => 'kuu7g97USlrtAPPr',
   'prefix' => '',
-  'host' => 'localhost',
-  'port' => '8889',
+  'host' => 'gierescaqbwebsit.mysql.db',
+  //'port' => '8889',
   'namespace' => 'Drupal\\Core\\Database\\Driver\\mysql',
   'driver' => 'mysql',
 );

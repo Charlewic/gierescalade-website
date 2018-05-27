@@ -76,6 +76,10 @@
 {{ attach_library('classy/node') }}
 <article{{ attributes.addClass(classes) }}>
 
+  {% if view_mode == 'full' and node.bundle == 'discussions' %}
+	<h1>{{ node.label }}</h1>
+  {% endif %}
+
   {{ title_prefix }}
   {% if not page %}
     <h2{{ title_attributes }}>
