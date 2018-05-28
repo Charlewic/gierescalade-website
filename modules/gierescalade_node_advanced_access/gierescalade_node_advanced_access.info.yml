@@ -1,0 +1,7 @@
+name: Gierescalade Advanced Node Access module
+description: Adapt node access with gierescalade website needs
+package: Custom
+
+type: module
+core: 8.x
+version: 1.0

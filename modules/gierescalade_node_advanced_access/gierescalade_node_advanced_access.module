@@ -1,0 +1,14 @@
+<?php
+
+use Drupal\Core\Access\AccessResult;
+use Drupal\node\NodeInterface;
+use Drupal\Core\Session\AccountInterface;
+
+function gierescalade_node_advanced_access_node_access(NodeInterface $node, $op, AccountInterface $account) {
+    $type = $node->bundle();
+    if($type == "gallerie" && !$node->get('publique') && $account->isAnonymous()){
+        return AccessResult::forbidden();
+    }
+
+    return AccessResult::neutral();
+}
