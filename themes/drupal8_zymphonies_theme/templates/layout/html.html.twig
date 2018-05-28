@@ -65,11 +65,17 @@ db_offline ? 'db-offline',
         jQuery(document).ready(function () {
             jQuery("#wrapper img:not(.no-zoom)").on('load', function () {
 		// load is never call perhaps its too quick ?
+		if(jQuery(this).closest('.cboxElement').length > 0){
+			return;
+		}
                 if (jQuery(this).width() != jQuery(this).prop('naturalWidth') || jQuery(this).height() != jQuery(this).prop('naturalHeight')) {
                     jQuery(this).attr("data-action", "zoom");
                 }
             });
 	    jQuery("#wrapper img:not(.no-zoom)").each(function () {
+		if(jQuery(this).closest('.cboxElement').length > 0){ 
+                        return;
+                }
                 if (jQuery(this).width() != jQuery(this).prop('naturalWidth') || jQuery(this).height() != jQuery(this).prop('naturalHeight')) {
                     jQuery(this).attr("data-action", "zoom");
                 }
