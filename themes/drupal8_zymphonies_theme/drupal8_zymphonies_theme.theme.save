@@ -188,11 +188,5 @@ function drupal8_zymphonies_theme_form_system_theme_settings_alter(&$form, \Drup
   );
 }
 
-function drupal8_zymphonies_theme_form_alter(&$form, $form_state, $form_id) {
-  if ( $form['#form_id'] == 'user_login_form' ) {
-	$form['actions']['#suffix'] = '<div class="user-login-navigation"><ul>';
-	$form['actions']['#suffix'] .= '<li>Pas encore de compte ? Pour s\'inscrire au site du club c\'est ici : <a href="'.Url::fromRoute('user.register')->toString().'">Créer un compte</a></li>';
-	$form['actions']['#suffix'] .= '<li>Mot de passe oublié ? : <a href="'.Url::fromRoute('user.pass')->toString().'">Réinitialiser son mot de passe</a></li>';
-	$form['actions']['#suffix'] .= '</ul></div>';
-  }
-}
+
+/* Implements*/
