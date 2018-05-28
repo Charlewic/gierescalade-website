@@ -111,7 +111,7 @@ function _gierescalade_notification_send_mail_to_grimpeurs($subject, $message, $
 
     $langcode = \Drupal::currentUser()->getPreferredLangcode();
     $mailManager = \Drupal::service('plugin.manager.mail');
-    $message = $mailManager->mail('gierescalade_notification', $messageType, $recipients, $langcode, $params, "gierescalade@yahoo.fr", true);
+    $message = $mailManager->mail('gierescalade_notification', $messageType, $recipients, $langcode, $params, "contact@gierescalade.fr", true);
 }
 
 function gierescalade_notification_mail($key, &$message, $params) {
