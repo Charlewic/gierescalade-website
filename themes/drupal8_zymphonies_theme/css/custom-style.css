@@ -547,8 +547,16 @@ ul.links.inline li{
 
 .profile > div{
   padding-right: 5px;
-  display: inline-block;
+/*  display: inline-block;*/
   vertical-align: top;
+}
+
+.profile .field--name-user-picture, .profile .js-form-item {
+  display: inline-block;
+}
+
+.profile .user-profile-actions {
+  margin-top: 1em;
 }
 
 .profile h4.label{

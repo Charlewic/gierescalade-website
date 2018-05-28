@@ -196,3 +196,8 @@ function drupal8_zymphonies_theme_form_alter(&$form, $form_state, $form_id) {
 	$form['actions']['#suffix'] .= '</ul></div>';
   }
 }
+
+function drupal8_zymphonies_theme_theme_suggestions_user_alter(array &$suggestions, array $variables, $hook){
+  $suggestions[] = $variables['theme_hook_original'] . '__' . str_replace('-', '_', $variables['elements']['#view_mode']);
+  return $suggestions;
+}
