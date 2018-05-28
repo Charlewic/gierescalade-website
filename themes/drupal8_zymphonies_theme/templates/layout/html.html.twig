@@ -23,40 +23,52 @@
  * @see template_preprocess_html()
  */
 #}
-{%
-  set body_classes = [
-    logged_in ? 'user-logged-in',
-    not root_path ? 'path-frontpage' : 'path-' ~ root_path|clean_class,
-    node_type ? 'page-node-type-' ~ node_type|clean_class,
-    db_offline ? 'db-offline',
-  ]
-%}
+{% set body_classes = [
+logged_in ? 'user-logged-in',
+not root_path ? 'path-frontpage' : 'path-' ~ root_path|clean_class,
+node_type ? 'page-node-type-' ~ node_type|clean_class,
+db_offline ? 'db-offline',
+] %}
 <!DOCTYPE html>
 <html{{ html_attributes }}>
-  <head>
+<head>
     <head-placeholder token="{{ placeholder_token|raw }}">
     <title>{{ head_title|safe_join(' | ') }}</title>
     <css-placeholder token="{{ placeholder_token|raw }}">
     <js-placeholder token="{{ placeholder_token|raw }}">
-  </head>
-  <body{{ attributes.addClass(body_classes) }}>
-    <a href="#main-content" class="visually-hidden focusable skip-link">
-      {{ 'Skip to main content'|t }}
-    </a>
-    {{ page_top }}
-    {{ page }}
-    {{ page_bottom }}
-    <js-bottom-placeholder token="{{ placeholder_token|raw }}">
+    <link href="/themes/drupal8_zymphonies_theme/css/zoom.css" rel="stylesheet">
+</head>
+<body{{ attributes.addClass(body_classes) }}>
+<a href="#main-content" class="visually-hidden focusable skip-link">
+    {{ 'Skip to main content'|t }}
+</a>
+{{ page_top }}
+{{ page }}
+{{ page_bottom }}
+<js-bottom-placeholder token="{{ placeholder_token|raw }}">
     <script src="/themes/drupal8_zymphonies_theme/js/jquery.masonry.min.js"></script>
+    <script src="/themes/drupal8_zymphonies_theme/js/transition.js"></script>
+    <script src="/themes/drupal8_zymphonies_theme/js/zoom.min.js"></script>
     <script>
-      var $container = jQuery('.node--type-gallerie.node--view-mode-full .field--name-field-images');
-        if($container.length > 0){
-          // $container.imagesLoaded( function(){
-          $container.masonry({
-            itemSelector : '.field__item'
-          });
-        // });
-      }
+        var $container = jQuery('.node--type-gallerie.node--view-mode-full .field--name-field-images');
+        if ($container.length > 0) {
+            // $container.imagesLoaded( function(){
+            $container.masonry({
+                itemSelector: '.field__item'
+            });
+            // });
+        }
+
     </script>
-  </body>
+    <script>
+        {# Active the zoom on all content image#}
+        jQuery(document).ready(function () {
+            jQuery("#wrapper img:not(.no-zoom)").load(function () {
+                if (jQuery(this).width() != jQuery(this).prop('naturalWidth') || jQuery(this).height() != jQuery(this).prop('naturalHeight')) {
+                    jQuery(this).attr("data-action", "zoom");
+                }
+            });
+        });
+    </script>
+</body>
 </html>
