@@ -6,7 +6,7 @@ use Drupal\Core\Session\AccountInterface;
 
 function gierescalade_node_advanced_access_node_access(NodeInterface $node, $op, AccountInterface $account) {
     $type = $node->bundle();
-    if($type == "gallerie" && !$node->get('publique') && $account->isAnonymous()){
+    if($type == "gallerie" && !$node->get('field_galerie_publique')->value && $account->isAnonymous()){
         return AccessResult::forbidden();
     }
 
