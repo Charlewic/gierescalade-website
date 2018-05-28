@@ -287,6 +287,10 @@ input[type="submit"]:hover{
   display: none;
 }
 
+.random-img {
+  max-height: 400px; 
+}
+
 /*MENU*/
 
 .navbar-default .navbar-toggle{
